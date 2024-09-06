@@ -3,7 +3,8 @@
 Welcome to **Amazon Insight**! This project allows users to gain deeper insights into their favorite Amazon products by scraping reviews in real-time and leveraging advanced language models to answer questions about the product.
 
 ## Watch Video
-https://github.com/user-attachments/assets/07562cf8-26ad-40fa-b79b-3bb833410dbc
+https://github.com/user-attachments/assets/a297c174-7728-4b80-9772-36492febba8c
+
 
 ## Overview
 
