@@ -1,0 +1,73 @@
+/* Import Google Fonts for general text and icons */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Source+Code+Pro:wght@900&display=swap');
+@import url('navbar.css');
+@import url('footer.css');
+/* Base Styles */
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    color: #393E46; /* Onyx Gray for text */
+    background-color: #EEEEEE; /* Light Gray for background */
+    line-height: 1.6;
+}
+
+/* Container for centralized content */
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Header styles */
+header {
+    background: #222831; /* Gunmetal Gray for headers */
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+    font-family: 'Roboto', sans-serif; /* Stylish font for header */
+    font-size: 24px;
+}
+
+/* Main content area */
+main {
+    flex: 1;
+    padding: 20px;
+    background-color: #EEEEEE;
+}
+
+/* Card styles for forms and other blocks */
+.card {
+    background-color: #fff;
+    border: 1px solid #393E46; /* Onyx Gray for borders */
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Buttons and Interactive Elements */
+button, .button, a.button {
+    background-color: #00ADB5; /* Bright teal for buttons */
+    color: #FFFFFF; /* White text on buttons */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover, .button:hover, a.button:hover {
+    background-color: #393E46; /* Dark gray for button hover state */
+}
+
+/* Responsive behavior */
+@media (max-width: 768px) {
+    .container, .card {
+        padding: 0 10px;
+    }
+}

@@ -1,0 +1,70 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #00ADB5;
+    color: white;
+    width: 100%;
+}
+
+.navbar-brand {
+    color: #EEEEEE !important;
+    text-decoration: none;
+}
+
+.nav-links, .auth-links {
+    display: flex;
+    align-items: center;
+}
+
+.nav-link, .auth-link {
+    text-decoration: none;
+    color: #EEEEEE !important; /* Explicitly set the color for all links */
+    padding: 8px 12px;
+    margin-right: 10px; /* Spacing between links */
+    display: inline-block; /* Ensure the links do not break into new lines */
+}
+
+.nav-link:hover, .auth-link:hover {
+    color: #393E46 !important; /* Light grey for hover */
+    /*background-color: rgba(255, 255, 255, 0.1) !important; !* Light transparent background on hover *!*/
+    border-radius: 4px; /* Slight rounding for better aesthetics */
+}
+
+.auth-links {
+    display: flex; /* This ensures flex container properties */
+    align-items: center; /* Align items vertically in the center */
+    justify-content: flex-end; /* Align items horizontally to the right */
+    margin-left: auto; /* Push the authentication links to the right */
+}
+
+/* Specific for icons in the links */
+.fas, .fab {
+    margin-right: 5px; /* Space before the text */
+    color: inherit; /* Ensure icons inherit the text color */
+}
+
+/* Media Query for Smaller Screens */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .nav-links, .auth-links {
+        flex-direction: row;
+        width: 100%;
+    }
+}
+
+/* Media Query for Larger Screens */
+@media (min-width: 768px) {
+    .navbar {
+        flex-direction: row; /* MUST be explicitly set here as well */
+        justify-content: space-between;
+        align-items: center;
+    }
+    .nav-links, .auth-links {
+        flex-direction: row;
+    }
+}

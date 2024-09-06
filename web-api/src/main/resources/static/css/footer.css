@@ -1,0 +1,35 @@
+footer {
+    background-color: #222831; /* Dark background for footer */
+}
+
+footer h5, footer p, footer .footer-link, footer a:not(.btn) {
+    color: #EEEEEE; /* Light text color for readability */
+}
+
+footer a.footer-link {
+    text-decoration: none; /* Remove underline from links */
+}
+
+footer .btn {
+    border: none; /* Removes border around buttons */
+}
+
+footer hr {
+    border-top-color: #393E46; /* Dark gray line for subtle division */
+}
+
+/* Styling for social media buttons with specific colors */
+footer .btn-facebook { background-color: #3b5998; }
+footer .btn-twitter { background-color: #55acee; }
+footer .btn-instagram { background-color: #ac2bac; }
+
+/* Additional hover effects for links */
+footer a:hover {
+    text-decoration: underline; /* Adds underline on hover */
+}
+
+/* Correcting padding and margins for alignment */
+footer .container {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}

@@ -1,0 +1,33 @@
+### IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+### Environment Files ###
+.env
+
+### Spring Boot ###
+application-local.properties
+
+### Ollama ###
+ollama_models
+
+### .pyc ###
+*.pyc
+
+### Target ###
+web-api/target/

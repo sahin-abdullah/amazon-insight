@@ -1,0 +1,26 @@
+<nav th:fragment="navbar" class="navbar navbar-expand-lg">
+    <a th:href="@{/}" class="navbar-brand">Amazon Insight</a>
+    <div class="nav-links">
+        <a th:href="@{/about}" class="nav-link">About</a>
+        <a th:href="@{https://www.linkedin.com/in/sahin-abdullah/}" class="nav-link" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-linkedin"></i> Contact
+        </a>
+        <a th:href="@{https://github.com/sahin-abdullah}" class="nav-link" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-github"></i> GitHub
+        </a>
+    </div>
+
+    <div class="auth-links">
+        <a th:if="${#authorization.expression('isAnonymous()')}" th:href="@{/login}" class="nav-link auth-link">
+            <i class="fas fa-sign-in-alt"></i> Sign In
+        </a>
+        <a th:if="${#authorization.expression('isAnonymous()')}" th:href="@{/register}" class="nav-link auth-link">
+            <i class="fas fa-user-plus"></i> Register
+        </a>
+        <span th:if="${#authorization.expression('isAuthenticated()')}" class="nav-link auth-link">
+        Hi <span th:text="${#authentication.name}">User</span>
+    </span>
+    </div>
+
+
+</nav>

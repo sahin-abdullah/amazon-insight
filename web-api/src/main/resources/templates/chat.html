@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat - Amazon Insight</title>
+    <link rel="stylesheet" th:href="@{/css/base.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/htmx.org@1.9.12" integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Main Color Scheme */
+        :root {
+            --primary-dark: #222831;
+            --secondary-dark: #393E46;
+            --highlight: #00ADB5;
+            --off-white: #ffffff;
+        }
+
+        body {
+            background: rgb(228, 220, 220);
+        }
+
+        .wrapper {
+            max-width: 95vw;
+            width: 100%;
+            position: relative;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        .wrapper i {
+            height: 50px;
+            width: 50px;
+            background: #00ADB5;
+            text-align: center;
+            line-height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            font-size: 1.25rem;
+            transform: translateY(-50%);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.23);
+            z-index: 2;
+        }
+
+        .wrapper i:first-child {
+            left: -25px;
+        }
+
+        .wrapper i:last-child {
+            right: -25px;
+        }
+
+        .carousel {
+            display: grid;
+            grid-auto-flow: column;
+            grid-auto-columns: calc((100% / 5) - 12px); /* 5 cards at a time */
+            gap: 16px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            scrollbar-width: none; /* Hide scrollbar */
+        }
+
+        .carousel::-webkit-scrollbar {
+            display: none; /* Hide scrollbar */
+        }
+
+        .carousel .card {
+            scroll-snap-align: start;
+            background: var(--off-white);
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        /* Card content styling */
+        .card-header {
+            background-color: var(--off-white);
+            color: var(--primary-dark);
+            padding: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .card-body {
+            color: var(--primary-dark);
+            padding: 10px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px;
+            font-size: 12px;
+        }
+
+        .rating .fas,
+        .rating .far,
+        .rating .fa-star-half-alt {
+            color: #FFCC00;
+            margin-right: 2px;
+            font-size: 14px;
+        }
+
+        .review-text {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+            margin-bottom: 5px;
+        }
+
+        .show-more {
+            color: var(--highlight);
+            cursor: pointer;
+            display: block;
+            text-align: left;
+            margin-top: 5px;
+            font-size: 12px;
+        }
+
+        @media screen and (max-width: 1200px) {
+            .carousel {
+                grid-auto-columns: calc((100% / 4) - 12px); /* 4 cards at a time */
+            }
+        }
+
+        @media screen and (max-width: 900px) {
+            .carousel {
+                grid-auto-columns: calc((100% / 3) - 12px); /* 3 cards at a time */
+            }
+        }
+
+        @media screen and (max-width: 600px) {
+            .carousel {
+                grid-auto-columns: calc((100% / 2) - 12px); /* 2 cards at a time */
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .carousel {
+                grid-auto-columns: 100%; /* 1 card at a time */
+            }
+        }
+
+        .product-details-container {
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            padding: 20px; /* Adjust padding as necessary */
+            background: none;
+            border-radius: 8px;
+            margin-top: 30px;
+            height: 50vh; /* Adjust this value based on your needs */
+        }
+
+        .product-details {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center all content horizontally */
+            justify-content: center; /* Center vertically */
+            text-align: center; /* Center text within the container */
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            width: 100%; /* Full width to take available space */
+            /*max-width: 350px; !* Adjust the max width if necessary *!*/
+            height: 100%; /* Make sure it uses the full height available */
+            margin: auto; /* Center the whole block */
+            min-height: 400px; /* Ensure minimum height for vertical alignment */
+        }
+
+
+
+        .product-details, .chat-agent {
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            height: 100%; /* Stretch to fill the parent container */
+        }
+
+        .product-details .card {
+            margin-bottom: 0 !important;
+        }
+
+        .product-details img {
+            max-height: 200px;
+            object-fit: contain;
+            margin: 0 auto 15px auto; /* Center the image */
+            display: block; /* Ensure it's treated as a block element */
+        }
+
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Distribute space between elements */
+            height: 100%; /* Make it use full height of its parent */
+        }
+
+        .chat-messages {
+            overflow-y: auto;
+            /*padding: 10px;*/
+            flex-grow: 1; /* Allow this area to grow and take up available space */
+        }
+
+        #chatForm {
+            display: flex;
+            align-items: center;
+            /*padding: 10px;*/
+            /*background-color: #f0f0f0;*/
+            /*border-top: 1px solid #ccc;*/
+        }
+
+        input:focus {
+            outline: none;
+            box-shadow: none; /* Also ensure no box shadow is applied */
+        }
+
+        .message {
+            display: flex;
+            width: 100%;
+            margin-bottom: 10px; /* Spacing between messages */
+        }
+
+        .user-message {
+            justify-content: flex-end; /* Align user messages to the right */
+        }
+
+        .user-message .message-bubble {
+            background-color: #f0f0f0; /* Light gray for user */
+            color: #333; /* Dark text for readability */
+            max-width: 70%;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .agent-message {
+            justify-content: flex-start; /* Align agent messages to the left */
+        }
+
+        .agent-message .message-bubble {
+            background-color: #00ADB5; /* Main greenish color for responses */
+            color: white; /* White text for responses */
+            max-width: 70%;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .chat-messages {
+            overflow-y: auto;
+            padding: 10px;
+            height: 400px;
+        }
+
+        .custom-cursor {
+            caret-color: black; /* Change the cursor color */
+            font-size: 18px; /* Increase the font size to make the cursor appear larger */
+        }
+
+    </style>
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+<div class="container-fluid mt-3">
+    <div class="row justify-content-center">
+        <div class="wrapper">
+            <i id="left" class="fas fa-chevron-left"></i>
+            <div class="carousel">
+                <div th:each="review : ${amazonItem.reviews}" class="card">
+                    <div class="card-header">
+                        <h5 th:text="${review.reviewTitle}">Review Title</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="rating mb-2">
+                            <th:block th:each="star : ${#numbers.sequence(1, 5)}">
+                                <span th:if="${review.rating >= star}" class="fas fa-star text-warning"></span>
+                                <span th:if="${review.rating < star and review.rating >= star - 0.5}" class="fas fa-star-half-alt text-warning"></span>
+                                <span th:if="${review.rating < star - 0.5}" class="far fa-star text-muted"></span>
+                            </th:block>
+                        </div>
+                        <p class="review-text" th:text="${review.reviewText}">This is a longer example of review text that might need to be clamped...</p>
+                        <a class="show-more" onclick="toggleText(this)">Show More</a>
+                    </div>
+                    <div class="card-footer">
+                        <small th:text="${#temporals.format(review.reviewDate, 'MMM dd, yyyy')}">Date</small>
+                        <span th:if="${review.helpfulCount > 0}" th:text="${review.helpfulCount} + ' found this helpful'"></span>
+                    </div>
+                </div>
+            </div>
+            <i id="right" class="fas fa-chevron-right"></i>
+        </div>
+    </div>
+    <div class="row product-details-container">
+
+        <!-- Product Details (3 columns) -->
+        <div class="col-md-2 p-0 h-100">
+            <div class="product-details">
+                <div class="card shadow-sm border-0 rounded-lg h-100">
+                    <div class="card-body text-center">
+                        <h5 class="card-title mb-3" th:text="${amazonItem.title}">Product Title</h5>
+                        <img th:src="${amazonItem.imageUrl}" alt="Product Image" class="img-fluid rounded mb-3" />
+                        <div class="rating mb-2">
+                            <th:block th:each="i : ${#numbers.sequence(1, 5)}">
+                                <span th:if="${amazonItem.averageRating >= i}" class="fas fa-star text-warning"></span>
+                                <span th:if="${amazonItem.averageRating < i and amazonItem.averageRating >= i - 0.5}" class="fas fa-star-half-alt text-warning"></span>
+                                <span th:if="${amazonItem.averageRating < i - 0.5}" class="far fa-star text-muted"></span>
+                            </th:block>
+                        </div>
+                        <p class="h5 font-weight-bold mb-1" th:text="${amazonItem.averageRating}">4.6</p>
+                        <p class="text-muted">Based on <span th:text="${amazonItem.totalReviewCount}">520</span> reviews</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Spacer (1 column) -->
+        <div class="col-md-1 p-0" style="max-width: 0.5rem;">
+            <!-- This is an empty column to add spacing -->
+        </div>
+
+
+        <div class="col-md-8 p-0 h-100">
+            <div class="chat-agent p-3">
+                <div class="chat-container">
+                    <div id="response-container" class="chat-messages">
+                        <!-- Chat messages will appear here -->
+                    </div>
+                    <div>
+                        <form id="chatForm"
+                              hx-post="/amazon/chat/ask"
+                              hx-target="#response-container"
+                              hx-swap="beforeend"
+                              class="flex items-center p-2 bg-gray-200 rounded-full">
+                            <input type="hidden" name="asin" id="asin" th:value="${amazonItem.asin}" />
+                            <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                            <input id="message" name="message" type="text" placeholder="Type your message here..."
+                                   class="flex-1 p-2 bg-gray-200 rounded-l-full custom-cursor" autocomplete="off">
+                            <button type="submit" class="p-2 bg-gray-300 hover:bg-gray-400 rounded-full">
+                                <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div th:replace="fragments/footer :: footer"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function toggleText(element) {
+        const text = element.previousElementSibling;
+        if (text.style.overflow === 'hidden') {
+            text.style.overflow = 'initial';
+            text.style.webkitLineClamp = 'none';
+            element.textContent = 'Show Less';
+        } else {
+            text.style.overflow = 'hidden';
+            text.style.webkitLineClamp = '4';
+            element.textContent = 'Show More';
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const carousel = document.querySelector(".carousel");
+        const arrowBtns = document.querySelectorAll(".wrapper i");
+        const firstCard = carousel.querySelector(".card");
+        const firstCardWidth = firstCard.offsetWidth;
+
+        let isDragging = false,
+            startX,
+            startScrollLeft;
+
+        const dragStart = (e) => {
+            isDragging = true;
+            carousel.classList.add("dragging");
+            startX = e.pageX || e.touches[0].pageX;
+            startScrollLeft = carousel.scrollLeft;
+        };
+
+        const dragging = (e) => {
+            if (!isDragging) return;
+            const x = e.pageX || e.touches[0].pageX;
+            carousel.scrollLeft = startScrollLeft - (x - startX);
+        };
+
+        const dragStop = () => {
+            isDragging = false;
+            carousel.classList.remove("dragging");
+        };
+
+        arrowBtns.forEach(btn => {
+            btn.addEventListener("click", () => {
+                carousel.scrollLeft += btn.id === "left" ? -firstCardWidth : firstCardWidth;
+            });
+        });
+
+        carousel.addEventListener("mousedown", dragStart);
+        carousel.addEventListener("touchstart", dragStart);
+
+        carousel.addEventListener("mousemove", dragging);
+        carousel.addEventListener("touchmove", dragging);
+
+        document.addEventListener("mouseup", dragStop);
+        carousel.addEventListener("mouseleave", dragStop);
+        carousel.addEventListener("touchend", dragStop);
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const chatForm = document.getElementById('chatForm');
+        const chatMessages = document.getElementById('response-container');
+
+        chatForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const messageInput = document.getElementById('message');
+            const userMessage = messageInput.value.trim();
+            if (userMessage === "") return;
+
+            // Append user message bubble
+            const userMessageElement = document.createElement('div');
+            userMessageElement.className = 'message user-message';
+            userMessageElement.innerHTML = `<div class="message-bubble">${userMessage}</div>`;
+            chatMessages.appendChild(userMessageElement);
+            messageInput.value = '';
+
+            // Manually trigger HTMX to send the request
+            htmx.trigger(chatForm, 'submit');
+        });
+
+        document.body.addEventListener('htmx:afterRequest', (event) => {
+            if (event.detail.target.id === 'response-container') {
+                Array.from(event.detail.target.childNodes).forEach((node, index) => {
+                    const content = node.textContent || node.innerHTML;
+                    if (content.trim()) { // Only wrap if content is not empty
+                        // Only process text nodes or elements that are not already a message
+                        if (node.nodeType === 3 || (node.nodeType === 1 && !node.classList.contains('message'))) {
+                            const wrapper = document.createElement('div');
+                            wrapper.className = 'message agent-message';
+                            const bubble = document.createElement('div');
+                            bubble.className = 'message-bubble';
+
+                            // Convert Markdown to HTML
+                            bubble.innerHTML = marked.parse(content.trim());
+
+                            wrapper.appendChild(bubble);
+                            node.parentNode.replaceChild(wrapper, node);
+                        }
+                    } else {
+                        // If content is empty, remove the node to avoid empty message bubbles
+                        node.parentNode.removeChild(node);
+                    }
+                });
+
+                // Scroll to the latest message
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            return true; // Return true to indicate async operation is in progress
+        });
+
+    });
+
+</script>
+</body>
+</html>
+
+    
