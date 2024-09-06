@@ -3,8 +3,8 @@
 Welcome to **Amazon Insight**! This project allows users to gain deeper insights into their favorite Amazon products by scraping reviews in real-time and leveraging advanced language models to answer questions about the product.
 
 ## Watch Video
+https://github.com/user-attachments/assets/07562cf8-26ad-40fa-b79b-3bb833410dbc
 
-[![Watch the video](https://i.postimg.cc/Bn1rcbxM/Screenshot-2024-09-05-214015.png)](https://www.loom.com/share/7acc817ad20f49b6bdb7fd788c76a648?sid=7ace57d1-9699-44ab-a0e4-ce41959a387a)
 ## Overview
 
 Amazon Insight is a multi-service application designed to provide a seamless user experience for extracting and analyzing Amazon product reviews. The application is composed of four main services:
